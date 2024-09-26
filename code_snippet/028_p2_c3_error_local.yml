@@ -1,0 +1,23 @@
+id: errors
+namespace: open_class_room.kestra
+
+tasks:
+  - id: parent-seq
+    type: io.kestra.plugin.core.flow.Sequential
+    tasks:
+      - id: t1
+        type: io.kestra.plugin.core.debug.Return
+        format: "{{task.id}} > {{taskrun.startDate}}"
+      - id: t2
+        type: io.kestra.plugin.core.flow.Sequential
+        tasks:
+          - id: t2-t1
+            type: io.kestra.plugin.scripts.shell.Commands
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
+            commands:
+              - 'exit 1'
+        errors:
+          - id: error-t1
+            type: io.kestra.plugin.core.debug.Return
+            format: "Error Trigger ! {{task.id}}"

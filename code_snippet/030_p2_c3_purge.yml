@@ -1,0 +1,12 @@
+id: purge
+namespace: open_class_room.kestra
+
+tasks:
+  - id: "purge"
+    type: "io.kestra.plugin.core.storage.Purge"
+    endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 0 * * *"

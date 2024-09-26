@@ -1,0 +1,14 @@
+id: erreurs 
+namespace: open_class_room.kestra
+tasks:
+  - id: failed 
+    type: io.kestra.plugin.scripts.shell.Commands 
+    taskRunner: 
+       type: io.kestra.plugin.core.runner.Process 
+    commands: 
+      - exit 1 
+errors:
+   - id: 2nd 
+     type: io.kestra.plugin.core.log.Log 
+     message: Echec de la tâche {{task.id}} 
+     level: INFO

@@ -1,0 +1,24 @@
+id: orders_parallel
+namespace: open_class_room.kestra
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
+      SELECT *
+      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
+    store: true
+
+  - id: each
+    type: io.kestra.plugin.core.flow.ForEachItem
+    items: "{{ outputs.extract.uri }}"
+    batch:
+      rows: 1
+    namespace: open_class_room.kestra
+    flowId: orders
+    wait: true # wait for the subflow execution
+    transmitFailed: true # fail the task run if the subflow execution fails
+    inputs:
+      order: "{{ taskrun.items }}" # special variable that contains the items of the batch

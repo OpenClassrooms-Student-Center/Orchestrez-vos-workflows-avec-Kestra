@@ -1,0 +1,8 @@
+- id: retry-sample
+  type: io.kestra.plugin.core.log.Log
+  message: my output for task {{task.id}}
+  timeout: PT10M
+  retry:
+    type: constant
+    maxAttempt: 5
+    interval: PT15M

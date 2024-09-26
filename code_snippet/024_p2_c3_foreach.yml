@@ -1,0 +1,16 @@
+id: for_each_value
+namespace: open_class_room.kestra
+
+tasks:
+  - id: for_each
+    type: io.kestra.plugin.core.flow.ForEach
+    values: 
+      - value 1
+      - value 2
+      - value 3
+      - value 4
+    concurrencyLimit: 2
+    tasks:
+      - id: return
+        type: io.kestra.plugin.core.debug.Return
+        format: "{{ task.id }} with value '{{ taskrun.value }}'"

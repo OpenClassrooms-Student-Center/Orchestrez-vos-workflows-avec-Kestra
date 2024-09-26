@@ -1,0 +1,17 @@
+id: orders
+namespace: company.team
+
+inputs:
+  - id: order
+    type: STRING
+
+tasks:
+  - id: read_file
+    type: io.kestra.plugin.scripts.shell.Commands
+    runner: PROCESS
+    commands:
+      - cat "{{ inputs.order }}"
+
+  - id: read_file_content
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ read(inputs.order) }}"
