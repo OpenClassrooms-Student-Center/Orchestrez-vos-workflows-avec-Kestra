@@ -1,0 +1,59 @@
+id: exercise
+namespace: open_class_room.kestra
+description: |
+  In this exercise we use several plugins to ingest data into a PostgreSQL database.
+  
+  **Prerequisites**:
+
+    - PostgreSQL database. You can create a simple Postgre database with [Neon service](https://neon.tech/).
+
+  
+tasks:
+  # 1. Run queries to create schema and tables in Postgres database
+  # The connection url is jdbc:postgresql://<YOUR_POSTGRES_HOST_URL>:5432/<YOUR_DATABASE_NAME> 
+  # The username and password comes from your Neon account
+        # DROP SCHEMA IF EXISTS data CASCADE;
+        # CREATE SCHEMA IF NOT EXISTS data;
+        # CREATE TABLE IF NOT EXISTS data.salaries (
+        #   "work_year" INT,
+        #   "experience_level" VARCHAR,
+        #   "employment_type" VARCHAR,
+        #   "job_title" VARCHAR,
+        #   "salary" INT,
+        #   "salary_currency" VARCHAR,
+        #   "salary_in_usd" INT,
+        #   "employee_residence" VARCHAR,
+        #   "remote_ratio" INT,
+        #   "company_location" VARCHAR,
+        #   "company_size" VARCHAR
+        # );
+  - id: ddl_queries
+    type: 
+    url: 
+    username: 
+    password: 
+    sql: |
+
+
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/salaries.csv
+
+
+ # 2. Ingest data into the Postgres table
+  - id: ingest
+    type: io.kestra.plugin.jdbc.postgresql.CopyIn
+    url: 
+    username: 
+    password: 
+    format: CSV
+    from: "{{ outputs.download.uri }}"
+    table: 
+    header: true
+
+  # 3. Run the following query on the previous ingested Postgres table
+  # SELECT job_title, AVG(salary) FROM data.salaries GROUP BY job_title
+  - id: query
+    type:
+    store: true
+    # ...

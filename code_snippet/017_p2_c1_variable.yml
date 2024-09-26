@@ -1,0 +1,11 @@
+id: hello_world
+namespace: company.team
+
+variables:
+  myvar: hello
+  numeric_variable: 42
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ vars.myvar }} world {{ vars.numeric_variable }}"

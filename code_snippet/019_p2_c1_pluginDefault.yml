@@ -1,0 +1,21 @@
+id: postgres
+namespace: kestra.sandbox
+tasks:
+
+  - id: query_1
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: SELECT * FROM pg_catalog.pg_namespace
+    store: true
+
+
+  - id: query_2
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: SELECT field1, AVG(field2) FROM schema.table GROUP BY field1
+    store: true
+
+pluginDefaults:
+    - type: io.kestra.plugin.jdbc.postgresql.Query
+      values:
+        url: jdbc:postgresql://postgres:5432/kestra
+        username: '{{ secret("DATABASE_USERNAME") }}'
+        password: '{{ secret("DATABASE_PASSWORD") }}'

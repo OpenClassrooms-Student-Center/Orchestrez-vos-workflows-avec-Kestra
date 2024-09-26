@@ -1,0 +1,47 @@
+id: exercise
+namespace: open_class_room.kestra
+
+tasks:
+  - id: ddl_queries
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://{{secret('POSTGRES_HOST') }}/kestra"
+    username: "{{ secret('POSTGRES_USERNAME') }}"
+    password: "{{ secret('POSTGRES_PASSWORD')}}"
+    sql: |
+      DROP SCHEMA IF EXISTS data CASCADE;
+      CREATE SCHEMA IF NOT EXISTS data;
+      CREATE TABLE IF NOT EXISTS data.salaries (
+        "work_year" INT,
+        "experience_level" VARCHAR,
+        "employment_type" VARCHAR,
+        "job_title" VARCHAR,
+        "salary" INT,
+        "salary_currency" VARCHAR,
+        "salary_in_usd" INT,
+        "employee_residence" VARCHAR,
+        "remote_ratio" INT,
+        "company_location" VARCHAR,
+        "company_size" VARCHAR
+      );
+
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/salaries.csv
+
+  - id: ingest
+    type: io.kestra.plugin.jdbc.postgresql.CopyIn
+    url: "jdbc:postgresql://{{secret('POSTGRES_HOST') }}/kestra"
+    username: "{{ secret('POSTGRES_USERNAME') }}"
+    password: "{{ secret('POSTGRES_PASSWORD')}}"
+    format: CSV
+    from: "{{ outputs.download.uri }}"
+    table: data.salaries
+    header: true
+
+  - id: query
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "jdbc:postgresql://{{secret('POSTGRES_HOST') }}/kestra"
+    username: "{{ secret('POSTGRES_USERNAME') }}"
+    password: "{{ secret('POSTGRES_PASSWORD')}}"
+    store: true
+    sql: SELECT job_title, AVG(salary) FROM data.salaries GROUP BY job_title
