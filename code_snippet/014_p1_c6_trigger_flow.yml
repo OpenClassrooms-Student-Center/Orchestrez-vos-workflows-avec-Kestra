@@ -1,0 +1,19 @@
+id: flow_downstream
+namespace: company.team
+
+tasks:
+  - id: task_c
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ task.id }}"
+
+triggers:
+
+  - id: listen_send_email
+    type: io.kestra.plugin.core.trigger.Flow
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+        namespace: company.julien
+        flowId: send_email
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+        in:
+          - SUCCESS

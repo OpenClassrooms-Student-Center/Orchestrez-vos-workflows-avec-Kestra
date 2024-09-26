@@ -1,0 +1,12 @@
+id: http-trigger
+namespace: company.julien
+
+tasks:
+  # ...
+
+triggers:
+  - id: http
+    type: io.kestra.plugin.core.http.Trigger
+    interval: P1D   
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+    responseCondition: "{{ response.statusCode == 200 }}"

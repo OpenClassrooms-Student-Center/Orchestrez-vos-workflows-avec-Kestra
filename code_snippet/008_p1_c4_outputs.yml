@@ -1,0 +1,10 @@
+id: task_outputs_example
+namespace: company.team
+tasks:
+  - id: produce_output
+    type: io.kestra.plugin.core.debug.Return
+    format: 42
+
+  - id: use-output
+    type: io.kestra.plugin.core.log.Log
+    message: The previous task output is {{ outputs.produce_output.value }}

@@ -1,0 +1,41 @@
+id: exercise1_1
+namespace: open_class_room.kestra
+description: In this exercise we add a schedule trigger to run the flow every 2 minutes.
+
+
+# 1. Create an input allowing to pass a URL that will be processed by the flow tasks
+inputs:
+
+tasks:
+  # 2. Download data
+  # Use the ‘{{ inputs. }}' syntax to pass the URL to the `http.Download task`
+  - id: download
+    type: 
+    uri: 
+
+  # 3. Check if the http status code is successful or not (code 200)
+  # Using the `io.kestra.plugin.core.flow.If` task, check if the previous request ended successfully with a code == 200.
+  # Log two different messages upon condition.
+  # Tips: 
+  # - Each task expose outputs, you can access these ouptputs using Pebble syntax: '{{ outputs.task_name.exposed_value }}'
+  # - Focus on a task and use the "Source & documentation" view to see the different examples and outputs exposed by a task.
+  - id: check_code
+    type: 
+    condition: 
+    then:
+      - id: log_success
+        type: 
+
+    else:
+      - id: log_error
+        type: 
+
+# 4. Add a schedule trigger running the flow every 2 minutes
+# Tips:
+# - You can create cron expression with https://crontab.guru/
+triggers:
+  - id: schedule
+    type: 
+    cron: 
+    inputs:
+      data: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/salaries.csv

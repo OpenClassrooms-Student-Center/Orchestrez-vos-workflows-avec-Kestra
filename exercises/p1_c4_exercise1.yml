@@ -1,0 +1,29 @@
+id: exercise1
+namespace: open_class_room.kestra
+description: In this exercise you will see how to download a data file and use a flowable task.
+
+tasks:
+
+  # 1. Download data
+  # A csv file containing salaries for several data jobs can be found at https://raw.githubusercontent.com/kestra-io/datasets/main/csv/salaries.csv
+  # Use the `http.Download` task type to download the file. See how the auto-completion work when you start typing htt... (you can enable auto-completion with CTRL+SPACE)
+  - id: download
+    type: 
+    uri: 
+
+  # 2. Check if the http status code is successful or not (code 200)
+  # Using the `io.kestra.plugin.core.flow.If` task, check if the previous download request ended successfully with a code == 200.
+  # Log two different messages upon condition.
+  # Tips: 
+  # - Each task expose outputs, you can access these ouptputs using Pebble syntax: '{{ outputs.task_name.exposed_value }}'
+  # - Focus on a task and use the "Source & documentation" view to see the different examples and outputs exposed by a task.
+  - id: check_code
+    type: 
+    condition: 
+    then:
+      - id: log_success
+        type: 
+
+    else:
+      - id: log_error
+        type: 

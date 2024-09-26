@@ -1,0 +1,28 @@
+id: exercise3_2
+namespace: open_class_room.kestra
+
+labels:
+  certification: fundamentals
+  type: solution
+
+tasks:
+
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Flow has been trigger - {{ taskrun.id}}"
+
+# 1. Add conditions to trigger the flow only when the flow exercise1_1 in namespace open_class_room.kestra is in state SUCCESS
+# Tips:
+# - use the `io.kestra.plugin.core.condition.ExecutionFlowCondition` to describe the upstream flow condition
+# - use the `io.kestra.plugin.core.condition.ExecutionStatusCondition` to check the execution state of upstream flow
+# - check blueprints for inspiration
+triggers:
+  - id: listen-flow
+    type: io.kestra.plugin.core.trigger.Flow
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+        namespace: open_class_room.kestra
+        flowId: exercise1_1
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+        in:
+          - SUCCESS

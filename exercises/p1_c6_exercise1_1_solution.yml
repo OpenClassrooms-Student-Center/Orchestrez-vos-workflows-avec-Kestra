@@ -1,0 +1,45 @@
+id: exercise3_1
+namespace: open_class_room.kestra
+
+labels:
+  certification: fundamentals
+  type: solution
+
+# 1. Create an input allowing to pass a URL that will be processed by the flow tasks
+inputs:
+  - id: data
+    type: STRING
+
+tasks:
+
+  # 2. Download data
+  # Use the ‘{{ inputs. }}' syntax to pass the URL to the `http.Download task`
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: '{{ inputs.data }}'
+
+  # 3. Check if the http status code is successful or not (code 200)
+  # Using the `io.kestra.plugin.core.flow.If` task, check if the previous request ended successfully with a code == 200.
+  # Log two different messages upon condition.
+  # Tips: 
+  # - Each task expose outputs, you can access these ouptputs using Pebble syntax: '{{ outputs.task_name.exposed_value }}'
+  # - Focus on a task and use the "Source & documentation" view to see the different examples and outputs exposed by a task.
+  - id: check_code
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.download.code == 200}}"
+    then:
+      - id: log_success
+        type: io.kestra.plugin.core.log.Log
+        message: "SUCCESS"
+
+    else:
+      - id: log_error
+        type: io.kestra.plugin.core.log.Log
+        message: "ERROR"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: '*/2 * * * *'
+    inputs:
+      data: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/salaries.csv
