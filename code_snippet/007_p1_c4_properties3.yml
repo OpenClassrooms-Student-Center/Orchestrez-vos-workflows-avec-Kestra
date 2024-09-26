@@ -1,0 +1,13 @@
+- id: send_email
+  type: io.kestra.plugin.notifications.mail.MailSend
+  from: Julien@company.com
+  to: ceo@company.com
+  username: Julien
+  password: xxxxx
+  host: smtp.resend.com
+  port: 465
+  subject: "Here is your dataset"
+  attachments:
+    - name: data.csv
+      uri: "{{ outputs.query.uri }}"
+  htmlTextContent: "Please find attached your dataset as a CSV file"

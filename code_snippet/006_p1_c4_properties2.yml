@@ -1,0 +1,8 @@
+- id: query
+  type: io.kestra.plugin.jdbc.duckdb.Query
+  inputFiles:
+    data.csv: "{{ outputs.extract.uri }}"
+  sql: |
+    SELECT x, AVG(y) 
+    FROM read_csv_auto('{{workingDir}}/data.csv');
+  store: true

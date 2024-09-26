@@ -1,0 +1,3 @@
+- id: extract
+  type: io.kestra.plugin.core.http.Download
+  uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
