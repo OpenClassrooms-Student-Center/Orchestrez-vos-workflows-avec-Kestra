@@ -1,0 +1,13 @@
+id: push_to_git 
+namespace: system
+tasks:
+  - id: commit_and_push 
+    type: io.kestra.plugin.git.PushFlows 
+    url: https://github.com/kestra-io/scripts 
+    sourceNamespace: dev 
+    targetNamespace: prod # Notez que "pod" a été remplacé par "prod" pour plus de clarté flows: "*" branch: kestra username: github_username password: "{{ secret('GITHUB_ACCESS_TOKEN') }}" commitMessage: add namespace files changes
+
+triggers:
+  - id: schedule 
+    type: io.kestra.plugin.core.trigger.Schedule 
+    cron: "* */1 * * *" # toutes les heures

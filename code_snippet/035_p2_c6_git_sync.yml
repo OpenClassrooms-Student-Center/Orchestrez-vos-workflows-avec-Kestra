@@ -1,0 +1,17 @@
+id: sync_from_git 
+namespace: system
+tasks:
+
+- id: git 
+  type: io.kestra.plugin.git.SyncFlows 
+  url: https://github.com/kestra/scripts 
+  branch: main 
+  username: git_username 
+  password: "{{ secret('GITHUB_ACCESS_TOKEN') }}" 
+  targetNamespace: git 
+  includeChildNamespaces: true # facultatif ; par défaut, il est défini sur false pour permettre une définition explicite gitDirectory: your_git_dir
+
+triggers:
+  - id: schedule 
+    type: io.kestra.plugin.core.trigger.Schedule 
+    cron: "*/1 * * * *"

@@ -1,0 +1,38 @@
+name: Kestra CI/CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: valider-tous-les-flux
+        uses: kestra-io/validate-action@master
+        with:
+          directory: ./flux/prod  # Notez que "flows" a été remplacé par "flux" pour plus de cohérence
+          resource: flow
+          server: ${{secrets.KESTRA_HOSTNAME}}
+          user: ${{secrets.KESTRA_USER}}
+          password: ${{secrets.KESTRA_PASSWORD}}
+      - name: deployer-prod
+        uses: kestra-io/deploy-action@develop
+        with:
+          namespace: prod
+          directory: ./flux/prod  # Notez que "flows" a été remplacé par "flux" pour plus de cohérence
+          resource: flow
+          server: ${{secrets.KESTRA_HOSTNAME}}
+          user: ${{secrets.KESTRA_USER}}
+          password: ${{secrets.KESTRA_PASSWORD}}
+          delete: false
+      - name: deployer-prod-marketing
+        uses: kestra-io/deploy-action@develop
+        with:
+          namespace: prod.marketing
+          directory: ./flux/prod.marketing  # Notez que "flows" a été remplacé par "flux" pour plus de cohérence
+          resource: flow
+          server: ${{secrets.KESTRA_HOSTNAME}}
+          user: ${{secrets.KESTRA_USER}}
+          password: ${{secrets.KESTRA_PASSWORD}}
+          delete: false
