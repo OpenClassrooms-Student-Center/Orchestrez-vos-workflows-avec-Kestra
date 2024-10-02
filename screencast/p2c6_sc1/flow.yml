@@ -1,0 +1,11 @@
+id: push
+namespace: open_class_room.kestra.kestra
+tasks:
+
+  - id: push
+    type: io.kestra.plugin.git.PushFlows
+    url: XXX
+    username: ben8t
+    password: "{{ secret('GITHUB_TOKEN') }}"
+    sourceNamespace: '{{ flow.namespace }}'
+    targetNamespace: prod
