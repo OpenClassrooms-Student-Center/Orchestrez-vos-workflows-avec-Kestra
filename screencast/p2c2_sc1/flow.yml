@@ -1,0 +1,17 @@
+id: script
+namespace: open_class_room.kestra
+tasks:
+
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://raw.githubusercontent.com/kestra-io/datasets/main/csv/salaries.csv
+
+  - id: script
+    type: io.kestra.plugin.scripts.python.Script
+    beforeCommands:
+      - pip install pandas
+    script: |
+      import pandas as pd
+      data = pd.read_csv("{{outputs.download.uri}}")
+      print(data.head())
+      
